@@ -53,7 +53,9 @@ int Transition::getID() const {
 
 /////////////////////////////////////////////////////////////////
 
-Transition::Transition() : event_id(0) {}
+Transition::Transition() :
+  event_id(0)
+{}
 
 /////////////////////////////////////////////////////////////////
 
@@ -78,11 +80,14 @@ void Transition::setup(State* from, State* to, int event_id, CallbackFunction on
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 
-TimedTransition::TimedTransition() : start(0), interval(0) {}
+TimedTransition::TimedTransition() :
+  start(0),
+  interval(0)
+{}
 
 /////////////////////////////////////////////////////////////////
 
-TimedTransition::TimedTransition(State* from, State* to, int interval, CallbackFunction on_run /* = NULL */, String name /* = "" */, GuardCondition guard /* = NULL */) : TimedTransition() {
+TimedTransition::TimedTransition(State* from, State* to, int interval, CallbackFunction on_run /* = NULL */, String name /* = "" */, GuardCondition guard /* = NULL */) {
   setup(from, to, interval, on_run, name, guard);
 }
 
@@ -107,12 +112,6 @@ int TimedTransition::getInterval() const {
 
 int TimedTransition::getID() const {
   return id;
-}
-
-/////////////////////////////////////////////////////////////////
-
-void TimedTransition::reset() {
-  start = 0;
 }
 
 /////////////////////////////////////////////////////////////////
