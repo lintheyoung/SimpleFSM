@@ -1,34 +1,24 @@
-/////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////
 #pragma once
 #ifndef SIMPLE_FSM_H
 #define SIMPLE_FSM_H
 
-/////////////////////////////////////////////////////////////////
-
-#if defined(ARDUINO_ARCH_ESP32) || defined(ESP8266)
-  #include <functional>
-#endif
 #include "Arduino.h"
-
 #include "Transitions.h"
 #include "State.h"
-
-/////////////////////////////////////////////////////////////////
+#include <vector>
 
 typedef void (*CallbackFunction) ();
 typedef bool (*GuardCondition) ();
 
-/////////////////////////////////////////////////////////////////
-
 class SimpleFSM {
-  public:
+public:
     SimpleFSM();
     SimpleFSM(State* initial_state);
     ~SimpleFSM();
 
     void add(Transition t[], int size);
-    void add(TimedTransition t[]  , int size);
+    void add(TimedTransition t[], int size);
 
     void setInitialState(State* state);
     void setFinishedHandler(CallbackFunction f);
@@ -45,12 +35,11 @@ class SimpleFSM {
     unsigned long lastTransitioned() const;
     String getDotDefinition();
 
-    
-  protected:
+protected:
     int num_timed = 0;
     int num_standard = 0;
-    Transition* transitions = NULL;
-    TimedTransition* timed = NULL;
+    std::vector<Transition> transitions;
+    std::vector<TimedTransition> timed;
 
     bool is_initialized = false;
     bool is_finished = false;
@@ -75,8 +64,7 @@ class SimpleFSM {
     String _dot_inital_state();
     String _dot_header();
     String _dot_active_node();
-};  
+};
 
-/////////////////////////////////////////////////////////////////
 #endif
-/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////

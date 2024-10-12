@@ -1,28 +1,20 @@
-/////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////
 #pragma once
 #ifndef TRANSITIONS_H
 #define TRANSITIONS_H
 
-/////////////////////////////////////////////////////////////////
-
 #include "Arduino.h"
 #include "State.h"
-
-/////////////////////////////////////////////////////////////////
 
 typedef void (*CallbackFunction) ();
 typedef bool (*GuardCondition) ();
 
-/////////////////////////////////////////////////////////////////
-// abstract parent class for Transition and TimedTransition
-
+// Abstract parent class for Transition and TimedTransition
 class AbstractTransition {
-  friend class SimpleFSM;
+    friend class SimpleFSM;
 
-  public:
+public:
     AbstractTransition();
-    // to make this class an interface
     virtual ~AbstractTransition() {};
     virtual int getID() const = 0;
     String getName() const;
@@ -31,7 +23,7 @@ class AbstractTransition {
     void setOnRunHandler(CallbackFunction f);
     void setGuardCondition(GuardCondition f);
 
-  protected:
+protected:
     static int _next_id;
     int id = 0;
     String name = "";
@@ -41,42 +33,38 @@ class AbstractTransition {
     GuardCondition guard_cb = NULL;
 };
 
-/////////////////////////////////////////////////////////////////
-
 class Transition : public AbstractTransition {
-  friend class SimpleFSM;
+    friend class SimpleFSM;
 
-  public:
+public:
     Transition();
     Transition(State* from, State* to, int event_id, CallbackFunction on_run = NULL, String name = "", GuardCondition guard = NULL);
 
     void setup(State* from, State* to, int event_id, CallbackFunction on_run = NULL, String name = "", GuardCondition guard = NULL);
 
-    int getID() const;
+    int getID() const override;
     int getEventID() const;
 
-  protected: 
+protected: 
     int event_id;
 };
 
-/////////////////////////////////////////////////////////////////
-
 class TimedTransition : public AbstractTransition {
-  friend class SimpleFSM;
+    friend class SimpleFSM;
 
-  public:
+public:
     TimedTransition();
     TimedTransition(State* from, State* to, int interval, CallbackFunction on_run = NULL, String name = "", GuardCondition guard = NULL);    
 
     void setup(State* from, State* to, int interval, CallbackFunction on_run = NULL, String name = "", GuardCondition guard = NULL);
 
-    int getID() const;
+    int getID() const override;
     int getInterval() const;
 
-  protected:    
+protected:    
     unsigned long start;
     unsigned long interval;
 };
-/////////////////////////////////////////////////////////////////
+
 #endif
-/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////
